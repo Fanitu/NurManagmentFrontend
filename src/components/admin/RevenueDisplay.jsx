@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { api } from '../../api/client';
 
 const PERIODS = [
-  { key: 'daily', label: 'Daily' },
-  { key: 'weekly', label: 'Weekly' },
-  { key: 'monthly', label: 'Monthly' },
+  { key: 'daily', label: 'በየቀኑ' },
+  { key: 'weekly', label: 'ሳምንታዊ' },
+  { key: 'monthly', label: 'ወርሃዊ' },
 ];
 
 function formatMoney(value) {
@@ -12,8 +12,6 @@ function formatMoney(value) {
   return `${n.toFixed(2)} Br`;
 }
 
-// "Monday 30 June 2026" style formatting, used for daily and for both ends
-// of the weekly/monthly range
 function formatLongDate(dateInput) {
   const date = new Date(dateInput);
   const weekday = date.toLocaleDateString(undefined, { weekday: 'long' });
@@ -29,54 +27,45 @@ function MetricValue({ value }) {
   return <div className={`revenue-metric__value ${cls}`}>{formatMoney(n)}</div>;
 }
 
+// Daily: only Total Revenue + Total Running Cost
 function DailyCard({ day }) {
   return (
     <div className="revenue-card">
       <div className="revenue-card__date">{formatLongDate(day.date)}</div>
-      <div className="revenue-card__grid">
+      <div className="revenue-card__grid revenue-card__grid--2col">
         <div className="revenue-metric">
-          <div className="revenue-metric__label">Revenue</div>
+          <div className="revenue-metric__label">ጠቅላላ ገቢ</div>
           <MetricValue value={day.totalRevenue} />
         </div>
         <div className="revenue-metric">
-          <div className="revenue-metric__label">Profit</div>
-          <MetricValue value={day.profit} />
-        </div>
-        <div className="revenue-metric">
-          <div className="revenue-metric__label">Running Cost</div>
+          <div className="revenue-metric__label">የሥራ ማስኬጃ ወጪ</div>
           <MetricValue value={day.runningCost} />
-        </div>
-        <div className="revenue-metric">
-          <div className="revenue-metric__label">Net Income</div>
-          <MetricValue value={day.netIncome} />
         </div>
       </div>
     </div>
   );
 }
 
+// Weekly / Monthly: Total Revenue + Total Running Cost + Net Profit (revenue - runningCost)
 function RangeCard({ start, end, data }) {
+  const netProfit = (Number(data.totalRevenue) || 0) - (Number(data.runningCost) || 0);
   return (
     <div className="revenue-card">
       <div className="revenue-card__date">
         {formatLongDate(start)} - {formatLongDate(end)}
       </div>
-      <div className="revenue-card__grid">
+      <div className="revenue-card__grid revenue-card__grid--3col">
         <div className="revenue-metric">
-          <div className="revenue-metric__label">Revenue</div>
+          <div className="revenue-metric__label">ጠቅላላ ገቢ</div>
           <MetricValue value={data.totalRevenue} />
         </div>
         <div className="revenue-metric">
-          <div className="revenue-metric__label">Profit</div>
-          <MetricValue value={data.profit} />
-        </div>
-        <div className="revenue-metric">
-          <div className="revenue-metric__label">Running Cost</div>
+          <div className="revenue-metric__label">የሥራ ማስኬጃ ወጪ</div>
           <MetricValue value={data.runningCost} />
         </div>
         <div className="revenue-metric">
-          <div className="revenue-metric__label">Net Income</div>
-          <MetricValue value={data.netIncome} />
+          <div className="revenue-metric__label">ጠቅላላ ትርፍ</div>
+          <MetricValue value={netProfit} />
         </div>
       </div>
     </div>
@@ -108,7 +97,7 @@ export default function RevenueDisplay() {
 
   return (
     <div>
-      <h2 className="panel-title">Revenue</h2>
+      <h2 className="panel-title">ገቢ</h2>
 
       <div className="period-tabs">
         {PERIODS.map((p) => (
@@ -126,7 +115,7 @@ export default function RevenueDisplay() {
       {error && <div className="form-error">{error}</div>}
 
       {!isLoading && data.length === 0 && (
-        <div className="empty-state">No revenue data for this period yet.</div>
+        <div className="empty-state">ምንም መረጃ አልተገኘም.</div>
       )}
 
       {!isLoading &&

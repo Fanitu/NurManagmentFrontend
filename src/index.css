@@ -3,7 +3,7 @@
   --bg: #f7f5f1;
   --surface: #ffffff;
   --border: #e8e4db;
-  --muted: #8b8478;
+  --muted: #2a2620;
   --primary: #2e6f4e;
   --primary-dark: #235539;
   --primary-tint: #e6efe9;
@@ -430,6 +430,14 @@ button:disabled {
   gap: 10px;
 }
 
+.revenue-card__grid--2col {
+  grid-template-columns: 1fr 1fr;
+}
+
+.revenue-card__grid--3col {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
 .revenue-metric {
   background: var(--bg);
   border-radius: 8px;
@@ -437,7 +445,8 @@ button:disabled {
 }
 
 .revenue-metric__label {
-  font-size: 11px;
+  font-size: 14px;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.4px;
   color: var(--muted);

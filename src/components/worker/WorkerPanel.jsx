@@ -4,9 +4,9 @@ import RunningCostInput from './RunningCostInput';
 import TodaysOrders from './TodaysOrders';
 
 const TABS = [
-  { key: 'order', label: 'Order Input' },
-  { key: 'runningCost', label: 'Running Cost Input' },
-  { key: 'todaysOrders', label: "Todays Total Orders" },
+  { key: 'order', label: 'ትዕዛዝ ተቀባይ' },/* 
+  { key: 'runningCost', label: 'Running Cost Input' }, */
+  { key: 'todaysOrders', label: "ቀኝ የተቀበሉት ትዕዛዝ" },
 ];
 
 export default function WorkerPanel() {
@@ -28,8 +28,8 @@ export default function WorkerPanel() {
 
       <main className="app-main">
         {activeTab === 'order' && <OrderInput />}
-        {activeTab === 'runningCost' && <RunningCostInput />}
-        {activeTab === 'todaysOrders' && <TodaysOrders />}
+       {/*  {activeTab === 'runningCost' && <RunningCostInput />}
+        */} {activeTab === 'todaysOrders' && <TodaysOrders />}
       </main>
     </>
   );

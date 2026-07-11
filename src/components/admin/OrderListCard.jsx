@@ -15,8 +15,8 @@ export default function OrderListCard({ item, onDelete, onUpdate }) {
       setError('Type and name are required');
       return;
     }
-    if (sellingPrice === '' || makingPrice === '' || Number(sellingPrice) < 0 || Number(makingPrice) < 0) {
-      setError('Please enter valid prices');
+    if (sellingPrice === '' || Number(sellingPrice) < 0 ) {
+      setError('Please enter a valid selling price');
       return;
     }
 
@@ -26,7 +26,6 @@ export default function OrderListCard({ item, onDelete, onUpdate }) {
         type: type.trim(),
         name: name.trim(),
         sellingPrice: Number(sellingPrice),
-        makingPrice: Number(makingPrice),
       });
       setIsEditing(false);
     } catch (err) {
@@ -45,8 +44,8 @@ export default function OrderListCard({ item, onDelete, onUpdate }) {
         </div>
         <div className="order-card__price">{item.sellingPrice.toFixed(2)} Br</div>
       </div>
-      <div className="order-card__time">Making price: {item.makingPrice.toFixed(2)} Br</div>
-
+      {/* <div className="order-card__time">Making price: {item.makingPrice.toFixed(2)} Br</div>
+ */}
       <div className="order-card__actions">
         <button className="btn btn--danger" onClick={() => onDelete(item._id)}>
           Delete
@@ -91,7 +90,7 @@ export default function OrderListCard({ item, onDelete, onUpdate }) {
               onChange={(e) => setSellingPrice(e.target.value)}
             />
           </div>
-          <div className="form-group">
+          {/* <div className="form-group">
             <label className="form-label">Making Price</label>
             <input
               className="form-input"
@@ -103,7 +102,7 @@ export default function OrderListCard({ item, onDelete, onUpdate }) {
               value={makingPrice}
               onChange={(e) => setMakingPrice(e.target.value)}
             />
-          </div>
+          </div> */}
 
           {error && <div className="form-error">{error}</div>}
 

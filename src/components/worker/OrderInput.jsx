@@ -76,11 +76,11 @@ export default function OrderInput() {
 
   return (
     <div>
-      <h2 className="panel-title">Order Input</h2>
+      <h2 className="panel-title">ትዕዛዝ ተቀባይ</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label className="form-label" htmlFor="order-select">
-            Order Type
+            ትዕዛዝ አይነት
           </label>
           <select
             id="order-select"
@@ -89,7 +89,7 @@ export default function OrderInput() {
             onChange={handleSelectChange}
           >
             <option value="" disabled>
-              Select an order
+              ትዕዛዝ ይምረጡ
             </option>
             {Object.entries(groupedByType).map(([type, items]) => (
               <optgroup label={type} key={type}>
@@ -105,7 +105,7 @@ export default function OrderInput() {
 
         <div className="form-group">
           <label className="form-label" htmlFor="order-price">
-            Price
+            ዋጋ
           </label>
           <input
             id="order-price"
@@ -123,7 +123,7 @@ export default function OrderInput() {
         {error && <div className="form-error">{error}</div>}
 
         <button className="btn btn--primary btn--block" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Saving…' : 'Submit Order'}
+          {isSubmitting ? 'Saving…' : 'ትዕዛዝ አስቀምጥ'}
         </button>
       </form>
     </div>

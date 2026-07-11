@@ -57,13 +57,13 @@ export default function TodaysOrders() {
 
   return (
     <div className="todays-orders-panel">
-      <h2 className="panel-title">Today's Total Orders</h2>
+      <h2 className="panel-title">ዛሬ ጠቅላላ ትዕዛዝ</h2>
 
-      {isLoading && <div className="loading-state">Loading orders…</div>}
+      {isLoading && <div className="loading-state">ትዕዛዞች…</div>}
       {error && <div className="form-error">{error}</div>}
 
       {!isLoading && orders.length === 0 && (
-        <div className="empty-state">No orders placed yet today.</div>
+        <div className="empty-state">ዛሬ ምንም ትዕዛዞች የሉም.</div>
       )}
 
       {!isLoading &&
@@ -80,12 +80,12 @@ export default function TodaysOrders() {
       {!isLoading && (
         <div className="todays-summary-fixed">
           <div className="todays-summary-fixed__item">
-            <div className="todays-summary-fixed__label">Total Orders</div>
+            <div className="todays-summary-fixed__label">ጠቅላላ ትዕዛዝ</div>
             <div className="todays-summary-fixed__value">{totals.totalOrders}</div>
           </div>
           <div className="todays-summary-fixed__divider" />
           <div className="todays-summary-fixed__item">
-            <div className="todays-summary-fixed__label">Total Revenue</div>
+            <div className="todays-summary-fixed__label">ጠቅላላ ገቢ</div>
             <div className="todays-summary-fixed__value">{totals.totalRevenue.toFixed(2)} Br</div>
           </div>
         </div>

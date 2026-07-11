@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import RevenueDisplay from './RevenueDisplay';
 import OrdersListPanel from './OrdersListPanel';
+import RunningCostInput from '../worker/RunningCostInput';
 
 const TABS = [
-  { key: 'revenue', label: 'Revenue' },
-  { key: 'ordersList', label: 'Orders List' },
+  { key: 'revenue', label: 'ገቢ' },
+  { key: 'Running-Cost', label: 'የሥራ ማስኬጃ ወጪ' },
+  { key: 'ordersList', label: 'የትዕዛዝ ዝርዝር' },
 ];
 
 export default function AdminPanel() {
@@ -26,6 +28,7 @@ export default function AdminPanel() {
 
       <main className="app-main">
         {activeTab === 'revenue' && <RevenueDisplay />}
+        {activeTab === 'Running-Cost' && <RunningCostInput />}
         {activeTab === 'ordersList' && <OrdersListPanel />}
       </main>
     </>

@@ -71,9 +71,9 @@ export default function OrderCard({ order, catalog, onDelete, onUpdate }) {
       <div className="order-card__time">{formattedTime}</div>
 
       <div className="order-card__actions">
-        <button className="btn btn--danger" onClick={() => onDelete(order._id)}>
+        { /*<button className="btn btn--danger" onClick={() => onDelete(order._id)}>
           Delete
-        </button>
+        </button>*/}
         <button className="btn btn--primary" onClick={() => setIsEditing((v) => !v)}>
           {isEditing ? 'Cancel' : 'Update'}
         </button>

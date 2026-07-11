@@ -37,17 +37,17 @@ export default function RunningCostInput() {
 
   return (
     <div>
-      <h2 className="panel-title">Running Cost Input</h2>
+      <h2 className="panel-title">የሥራ ማስኬጃ ወጪ</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label className="form-label" htmlFor="cost-name">
-            Name
+            ስም
           </label>
           <input
             id="cost-name"
             className="form-input"
             type="text"
-            placeholder="e.g. Gas refill"
+            placeholder="ዳቦ እና ዘይት"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -55,7 +55,7 @@ export default function RunningCostInput() {
 
         <div className="form-group">
           <label className="form-label" htmlFor="cost-price">
-            Price
+            ዋጋ
           </label>
           <input
             id="cost-price"
@@ -73,7 +73,7 @@ export default function RunningCostInput() {
         {error && <div className="form-error">{error}</div>}
 
         <button className="btn btn--primary btn--block" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Saving…' : 'Submit Running Cost'}
+          {isSubmitting ? 'Saving…' : 'የሥራ ማስኬጃ አስቀምጥ'}
         </button>
       </form>
     </div>

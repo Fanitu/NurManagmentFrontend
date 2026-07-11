@@ -45,7 +45,7 @@ export default function OrdersListPanel() {
 
   return (
     <div>
-      <h2 className="panel-title">Orders List</h2>
+      <h2 className="panel-title">የትዕዛዝ ዝርዝር</h2>
 
       {isLoading && <div className="loading-state">Loading order list…</div>}
       {error && <div className="form-error">{error}</div>}
@@ -60,7 +60,7 @@ export default function OrdersListPanel() {
         ))}
 
       <button className="btn btn--primary fab" onClick={() => setShowAddModal(true)}>
-        + Add Order List
+        + ትዕዛዝ ጨምር
       </button>
 
       {showAddModal && (

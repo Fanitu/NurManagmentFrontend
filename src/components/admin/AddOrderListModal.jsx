@@ -19,7 +19,7 @@ export default function AddOrderListModal({ onClose, onAdded }) {
       setError('Type and name are required');
       return;
     }
-    if (sellingPrice === '' || makingPrice === '' || Number(sellingPrice) < 0 || Number(makingPrice) < 0) {
+    if (sellingPrice === '' || Number(sellingPrice) < 0 ) {
       setError('Please enter valid prices');
       return;
     }
@@ -30,7 +30,6 @@ export default function AddOrderListModal({ onClose, onAdded }) {
         type: type.trim(),
         name: name.trim(),
         sellingPrice: Number(sellingPrice),
-        makingPrice: Number(makingPrice),
       });
       showToast('New order added successfully');
       onAdded(created);
@@ -49,28 +48,28 @@ export default function AddOrderListModal({ onClose, onAdded }) {
           <h2 className="modal__title">Add Order List Item</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label className="form-label">Type</label>
+              <label className="form-label">አይነት</label>
               <input
                 className="form-input"
                 type="text"
-                placeholder="e.g. Food, Drink"
+                placeholder="e.g. ምግብ መጠጥ"
                 value={type}
                 onChange={(e) => setType(e.target.value)}
                 autoFocus
               />
             </div>
             <div className="form-group">
-              <label className="form-label">Name</label>
+              <label className="form-label">ስም</label>
               <input
                 className="form-input"
                 type="text"
-                placeholder="e.g. Pizza"
+                placeholder="ጥብስ በየዓይነቱ"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="form-group">
-              <label className="form-label">Selling Price</label>
+              <label className="form-label">መሸጥ ዋጋ</label>
               <input
                 className="form-input"
                 type="number"
@@ -82,8 +81,8 @@ export default function AddOrderListModal({ onClose, onAdded }) {
                 onChange={(e) => setSellingPrice(e.target.value)}
               />
             </div>
-            <div className="form-group">
-              <label className="form-label">Making Price</label>
+            {/* <div className="form-group">
+              <label className="form-label">ማቀና ዋጋ</label>
               <input
                 className="form-input"
                 type="number"
@@ -94,12 +93,12 @@ export default function AddOrderListModal({ onClose, onAdded }) {
                 value={makingPrice}
                 onChange={(e) => setMakingPrice(e.target.value)}
               />
-            </div>
+            </div> */}
 
             {error && <div className="form-error">{error}</div>}
 
             <button className="btn btn--primary btn--block" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Adding…' : 'Add New Order'}
+              {isSubmitting ? 'Adding…' : 'የትዕዛዝ ዝርዝር አስቀምጥ'}
             </button>
           </form>
         </div>

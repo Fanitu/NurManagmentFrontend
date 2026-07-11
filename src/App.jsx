@@ -15,7 +15,7 @@ export default function App() {
   };
 
   const isAdmin = user?.role === 'admin';
-  const headerTitle = isAdmin ? 'Admin Panel' : 'Order Management System';
+  const headerTitle = isAdmin ? 'ዋና ፓነል' : 'ትዕዛዝ አስተዳደር ስርዓት';
 
   if (isLoading) {
     return <div className="loading-state">Loading…</div>;
