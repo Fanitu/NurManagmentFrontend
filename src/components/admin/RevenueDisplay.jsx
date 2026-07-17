@@ -73,7 +73,7 @@ function DailyCard({ day }) {
         onClick={handleViewAll}
         disabled={isLoadingDetail}
       >
-        {isLoadingDetail ? 'Loading…' : expanded ? 'Close ▲' : 'View All ▼'}
+        {isLoadingDetail ? 'Loading…' : expanded ? 'ዝጋው ▲' : 'ዕለታዊ ዝርዝሮች ▼'}
       </button>
 
       {detailError && <div className="form-error">{detailError}</div>}
@@ -211,8 +211,8 @@ function RangeCard({ start, end, data, type }) {
         {isLoadingDetail
           ? 'Loading…'
           : expanded
-          ? 'Close ▲'
-          : type === 'weekly' ? 'Weekly View ▼' : 'View Monthly ▼'}
+          ? 'ዝጋው ▲'
+          : type === 'weekly' ? 'ሳምንታዊ ዝርዝሮች ይመልከቱት ▼' : 'ወርሃዊ ዝርዝሮች ይመልከቱት ▼'}
       </button>
 
       {detailError && <div className="form-error">{detailError}</div>}
@@ -251,7 +251,7 @@ function RangeCard({ start, end, data, type }) {
                       </div>
                     ))}
                     <div className="weekly-day-block__subtotal">
-                      ንዑስ ድምር: {Number(day.dayTotalRevenue).toFixed(2)} Br
+                      ጠቅላላ ድምር: {Number(day.dayTotalRevenue).toFixed(2)} Br
                     </div>
                   </div>
                 )}
@@ -272,7 +272,7 @@ function RangeCard({ start, end, data, type }) {
                       </div>
                     ))}
                     <div className="weekly-day-block__subtotal weekly-day-block__subtotal--cost">
-                      ንዑስ ድምር: {Number(day.dayTotalCost).toFixed(2)} Br
+                      ጠቅላላ ድምር: {Number(day.dayTotalCost).toFixed(2)} Br
                     </div>
                   </div>
                 )}
@@ -339,7 +339,7 @@ function RangeCard({ start, end, data, type }) {
                 </div>
                 <div className="daily-detail__row-right">
                   <span className="daily-detail__price daily-detail__price--cost">
-                    {c.count} × {Number(c.price).toFixed(2)} = {Number(c.total).toFixed(2)} Br
+                    {c.count} ጊዜ — ጠቅላላ: {Number(c.total).toFixed(2)} Br
                   </span>
                 </div>
               </div>
