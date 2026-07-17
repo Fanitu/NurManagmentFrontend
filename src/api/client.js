@@ -54,8 +54,17 @@ export const api = {
   // running cost
   createRunningCost: (payload) => request('/running-cost', { method: 'POST', body: payload }),
 
+  // monthly expenses
+  createMonthlyExpense: (payload) => request('/monthly-expenses', { method: 'POST', body: payload }),
+  getAllMonthlyExpenses: () => request('/monthly-expenses'),
+  updateMonthlyExpense: (id, payload) => request(`/monthly-expenses/${id}`, { method: 'PUT', body: payload }),
+  deleteMonthlyExpense: (id) => request(`/monthly-expenses/${id}`, { method: 'DELETE' }),
+
   // admin revenue
   getDailyRevenue: () => request('/admin/revenue/daily'),
+  getDailyDetail: (date) => request(`/admin/revenue/daily/${date}`),
   getWeeklyRevenue: () => request('/admin/revenue/weekly'),
+  getWeeklyDetail: (weekStart) => request(`/admin/revenue/weekly/${weekStart}`),
   getMonthlyRevenue: () => request('/admin/revenue/monthly'),
+  getMonthlyDetail: (monthStart) => request(`/admin/revenue/monthly/${monthStart}`),
 };
