@@ -574,12 +574,14 @@ button:disabled {
 }
 
 .daily-detail__section-title {
-  font-size: 12px;
-  font-weight: 700;
+  background: var(--ink);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700; 
   text-transform: uppercase;
   letter-spacing: 0.4px;
-  color: var(--muted);
   margin-bottom: 8px;
+  padding: 6px 10px;
 }
 
 .daily-detail__empty {
@@ -792,11 +794,15 @@ button:disabled {
 .monthly-detail__sum--revenue {
   background: var(--primary-tint);
   color: var(--primary-dark);
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .monthly-detail__sum--cost {
-  background: var(--danger-tint);
-  color: var(--danger);
+  background: var(--primary-tint);
+  color: var(--primary-dark);
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .monthly-detail__sum--expense {
@@ -806,6 +812,83 @@ button:disabled {
 
 .daily-detail__price--expense {
   color: #b07d00;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+
+
+
+/* ---------- Delete modal ---------- */
+.delete-modal__order-name {
+  text-align: center;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  margin: -8px 0 16px;
+}
+
+.delete-modal__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.delete-modal__actions .btn {
+  flex: 1;
+  padding: 13px;
+}
+
+.btn--ghost-dark {
+  background: var(--border);
+  color: var(--ink);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.btn--danger-solid {
+  background: var(--danger);
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.btn--danger-solid:hover {
+  background: #a84a2a;
+}
+
+/* ---------- Deleted orders in daily detail ---------- */
+.daily-detail__section--deleted {
+  border: 1.5px solid var(--danger-tint);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.daily-detail__section-title--deleted {
+  background: var(--danger-tint);
+  color: var(--danger);
+}
+
+.daily-detail__row--deleted {
+  background: #fdf6f4;
+}
+
+.daily-detail__name--deleted {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.daily-detail__delete-reason {
+  font-size: 12px;
+  color: var(--danger);
+  margin-top: 3px;
+  font-style: italic;
+}
+
+.daily-detail__price--deleted {
+  color: var(--danger);
   font-weight: 700;
   font-size: 14px;
 }

@@ -32,16 +32,16 @@ export default function TodaysOrders() {
     loadData();
   }, []);
 
-  const handleDelete = async (id) => {
-    const previous = orders;
-    setOrders((prev) => prev.filter((o) => o._id !== id)); // optimistic
-    try {
-      await api.deleteOrder(id);
-    } catch (err) {
-      setOrders(previous); // roll back on failure
-      setError('Failed to delete order');
-    }
-  };
+  const handleDelete = async (id, reason) => {
+  const previous = orders;
+  setOrders((prev) => prev.filter((o) => o._id !== id));
+  try {
+    await api.deleteOrder(id, reason);
+  } catch (err) {
+    setOrders(previous);
+    setError('Failed to delete order');
+  }
+};
 
   const handleUpdate = async (id, payload) => {
     const updated = await api.updateOrder(id, payload);

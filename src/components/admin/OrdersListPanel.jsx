@@ -47,11 +47,11 @@ export default function OrdersListPanel() {
     <div>
       <h2 className="panel-title">የትዕዛዝ ዝርዝር</h2>
 
-      {isLoading && <div className="loading-state">Loading order list…</div>}
+      {isLoading && <div className="loading-state">የትዕዛዝ ዝርዝርን በመጫን ላይ…</div>}
       {error && <div className="form-error">{error}</div>}
 
       {!isLoading && items.length === 0 && (
-        <div className="empty-state">No order list items yet. Add one to get started.</div>
+        <div className="empty-state">እስካሁን ምንም የትዕዛዝ ዝርዝር የሉም። ለመጀመር አንዱን ይመዝግቡ።</div>
       )}
 
       {!isLoading &&

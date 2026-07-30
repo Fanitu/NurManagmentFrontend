@@ -60,18 +60,18 @@ export default function OrderInput() {
         name: item.name,
         sellingPrice: Number(price),
       });
-      showToast('Order successfully saved');
+      showToast('ትዕዛዝ በተሳካ ሁኔታ ተመዝግቧል');
       setSelectedItemId('');
       setPrice('');
     } catch (err) {
-      setError(err.message || 'Failed to save order');
+      setError(err.message || 'ትዕዛዝ ማስቀመጥ አልተሳካም');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   if (isLoadingCatalog) {
-    return <div className="loading-state">Loading order types…</div>;
+    return <div className="loading-state">ትዕዛዝ አይነቶችን በመጫን ላይ…</div>;
   }
 
   return (

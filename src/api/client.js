@@ -35,9 +35,9 @@ async function request(path, { method = 'GET', body, auth = true } = {}) {
 
 export const api = {
   // auth
-  login: (name, password) => request('/auth/login', { method: 'POST', body: { name, password }, auth: false }),
+  login: (name, password, restaurantId) => request('/auth/login', { method: 'POST', body: { name, password, restaurantId }, auth: false }),
   getMe: () => request('/auth/me'),
-
+ 
   // order list (catalog)
   getOrderList: () => request('/orderlist'),
   createOrderListItem: (payload) => request('/orderlist', { method: 'POST', body: payload }),
@@ -49,7 +49,7 @@ export const api = {
   getTodaysOrders: () => request('/orders/today'),
   getAllOrders: () => request('/orders'),
   updateOrder: (id, payload) => request(`/orders/${id}`, { method: 'PUT', body: payload }),
-  deleteOrder: (id) => request(`/orders/${id}`, { method: 'DELETE' }),
+  deleteOrder: (id, reason) => request(`/orders/${id}`, { method: 'DELETE', body: { reason } }),
 
   // running cost
   createRunningCost: (payload) => request('/running-cost', { method: 'POST', body: payload }),

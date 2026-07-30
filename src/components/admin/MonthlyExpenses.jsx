@@ -23,7 +23,7 @@ function ExpenseInput() {
     setIsSubmitting(true);
     try {
       await api.createMonthlyExpense({ name: name.trim(), amount: Number(amount) });
-      showToast('Monthly expense saved successfully');
+      showToast('ወርሃዊ ወጪ በተሳካ ሁኔታ ተመዝግቧል');
       setName('');
       setAmount('');
     } catch (err) {
@@ -42,7 +42,7 @@ function ExpenseInput() {
           <input
             className="form-input"
             type="text"
-            placeholder="e.g. Worker Salary, House Rent"
+            placeholder="ለምሳሌ፡ የሰራተኛ ደመወዝ፣ የቤት ኪራይ ወጪ ወዘተ"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -62,7 +62,7 @@ function ExpenseInput() {
         </div>
         {error && <div className="form-error">{error}</div>}
         <button className="btn btn--primary btn--block" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Saving…' : 'Save Monthly Expense'}
+          {isSubmitting ? 'የተመዘገበ ነው…' : 'ወርሃዊ ወጪን ይመዝግቡ'}
         </button>
       </form>
     </div>
@@ -184,7 +184,7 @@ function ExpenseList() {
 
   const total = expenses.reduce((s, e) => s + (Number(e.amount) || 0), 0);
 
-  if (isLoading) return <div className="loading-state">Loading…</div>;
+  if (isLoading) return <div className="loading-state">ወርሃዊ ወጪዎችን በመጫን ላይ…</div>;
   if (error)     return <div className="form-error">{error}</div>;
 
   return (
@@ -192,7 +192,7 @@ function ExpenseList() {
       <h3 className="panel-title">የወርሃዊ ወጪ ዝርዝር</h3>
 
       {expenses.length === 0 && (
-        <div className="empty-state">No monthly expenses recorded yet.</div>
+        <div className="empty-state">እስካሁን ምንም ወርሃዊ ወጪዎች አልተመዘገቡም።</div>
       )}
 
       {expenses.map((expense) => (

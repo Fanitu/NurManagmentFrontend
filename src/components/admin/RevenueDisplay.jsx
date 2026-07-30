@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import { api } from '../../api/client';
 
 const PERIODS = [
@@ -79,53 +79,87 @@ function DailyCard({ day }) {
       {detailError && <div className="form-error">{detailError}</div>}
 
       {expanded && detail && (
-        <div className="daily-detail">
-          <div className="daily-detail__section">
-            <div className="daily-detail__section-title">
-              ትዕዛዞች ({detail.orders.length})
-            </div>
-            {detail.orders.length === 0 && (
-              <div className="daily-detail__empty">No orders this day</div>
-            )}
-            {detail.orders.map((o) => (
-              <div key={o._id} className="daily-detail__row">
-                <div className="daily-detail__row-left">
-                  <span className="daily-detail__name">{o.name}</span>
-                  {o.type && <span className="daily-detail__type">{o.type}</span>}
-                </div>
-                <div className="daily-detail__row-right">
-                  <span className="daily-detail__price">
-                    {Number(o.sellingPrice).toFixed(2)} Br
-                  </span>
-                  <span className="daily-detail__time">{formatTime(o.createdAt)}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+  <div className="daily-detail">
 
-          <div className="daily-detail__section">
-            <div className="daily-detail__section-title">
-              የሥራ ማስኬጃ ወጪዎች ({detail.runningCosts.length})
-            </div>
-            {detail.runningCosts.length === 0 && (
-              <div className="daily-detail__empty">No running costs this day</div>
-            )}
-            {detail.runningCosts.map((c) => (
-              <div key={c._id} className="daily-detail__row">
-                <div className="daily-detail__row-left">
-                  <span className="daily-detail__name">{c.name}</span>
-                </div>
-                <div className="daily-detail__row-right">
-                  <span className="daily-detail__price daily-detail__price--cost">
-                    {Number(c.price).toFixed(2)} Br
-                  </span>
-                  <span className="daily-detail__time">{formatTime(c.createdAt)}</span>
-                </div>
-              </div>
-            ))}
+    {/* Active orders */}
+    <div className="daily-detail__section">
+      <div className="daily-detail__section-title">
+        ትዕዛዞች ({detail.orders.length})
+      </div>
+      {detail.orders.length === 0 && (
+        <div className="daily-detail__empty">No orders this day</div>
+      )}
+      {detail.orders.map((o) => (
+        <div key={o._id} className="daily-detail__row">
+          <div className="daily-detail__row-left">
+            <span className="daily-detail__name">{o.name}</span>
+            {o.type && <span className="daily-detail__type">{o.type}</span>}
+          </div>
+          <div className="daily-detail__row-right">
+            <span className="daily-detail__price">
+              {Number(o.sellingPrice).toFixed(2)} Br
+            </span>
+            <span className="daily-detail__time">{formatTime(o.createdAt)}</span>
           </div>
         </div>
+      ))}
+    </div>
+
+    {/* Running costs */}
+    <div className="daily-detail__section">
+      <div className="daily-detail__section-title">
+        የሥራ ማስኬጃ ወጪዎች ({detail.runningCosts.length})
+      </div>
+      {detail.runningCosts.length === 0 && (
+        <div className="daily-detail__empty">ለዛሬ ምንም ዓይነት የስራ ማስኬጃ ወጪ የለም</div>
       )}
+      {detail.runningCosts.map((c) => (
+        <div key={c._id} className="daily-detail__row">
+          <div className="daily-detail__row-left">
+            <span className="daily-detail__name">{c.name}</span>
+          </div>
+          <div className="daily-detail__row-right">
+            <span className="daily-detail__price daily-detail__price--cost">
+              {Number(c.price).toFixed(2)} Br
+            </span>
+            <span className="daily-detail__time">{formatTime(c.createdAt)}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Deleted orders — only shown if any exist */}
+    {detail.deletedOrders && detail.deletedOrders.length > 0 && (
+      <div className="daily-detail__section daily-detail__section--deleted">
+        <div className="daily-detail__section-title daily-detail__section-title--deleted">
+          የተሰረዙ ትዕዛዞች ({detail.deletedOrders.length})
+        </div>
+        {detail.deletedOrders.map((o) => (
+          <div key={o._id} className="daily-detail__row daily-detail__row--deleted">
+            <div className="daily-detail__row-left">
+              <span className="daily-detail__name daily-detail__name--deleted">
+                {o.name}
+              </span>
+              {o.type && <span className="daily-detail__type">{o.type}</span>}
+              <span className="daily-detail__delete-reason">
+                ምክንያት: {o.deletedReason}
+              </span>
+            </div>
+            <div className="daily-detail__row-right">
+              <span className="daily-detail__price daily-detail__price--deleted">
+                -{Number(o.sellingPrice).toFixed(2)} Br
+              </span>
+              <span className="daily-detail__time">
+                {formatTime(o.createdAt)}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+
+  </div>
+)}
     </div>
   );
 }
@@ -212,81 +246,18 @@ function RangeCard({ start, end, data, type }) {
           ? 'Loading…'
           : expanded
           ? 'ዝጋው ▲'
-          : type === 'weekly' ? 'ሳምንታዊ ዝርዝሮች ይመልከቱት ▼' : 'ወርሃዊ ዝርዝሮች ይመልከቱት ▼'}
+          : type === 'weekly'
+          ? 'ሳምንታዊ ዝርዝሮች ይመልከቱት ▼'
+          : 'ወርሃዊ ዝርዝሮች ይመልከቱት ▼'}
       </button>
 
       {detailError && <div className="form-error">{detailError}</div>}
 
-      {/* ── Weekly expanded detail ── */}
+      {/* ── Weekly expanded detail (now flat grouped, same as monthly) ── */}
       {expanded && detail && type === 'weekly' && (
         <div className="daily-detail">
-          {detail.days.map((day) => {
-            const hasActivity = day.orders.length > 0 || day.runningCosts.length > 0;
-            if (!hasActivity) return null;
-            return (
-              <div key={day.date} className="weekly-day-block">
-                <div className="weekly-day-block__header">
-                  <span className="weekly-day-block__date">{formatLongDate(day.date)}</span>
-                  <span className="weekly-day-block__daytotal">
-                    {Number(day.dayTotalRevenue).toFixed(2)} Br
-                  </span>
-                </div>
 
-                {day.orders.length > 0 && (
-                  <div className="daily-detail__section">
-                    <div className="daily-detail__section-title">
-                      ትዕዛዞች ({day.orders.reduce((s, o) => s + o.count, 0)})
-                    </div>
-                    {day.orders.map((o, idx) => (
-                      <div key={idx} className="daily-detail__row">
-                        <div className="daily-detail__row-left">
-                          <span className="daily-detail__name">{o.name} ({o.count})</span>
-                          {o.type && <span className="daily-detail__type">{o.type}</span>}
-                        </div>
-                        <div className="daily-detail__row-right">
-                          <span className="daily-detail__price">
-                            {o.count} × {Number(o.sellingPrice).toFixed(2)} = {Number(o.total).toFixed(2)} Br
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                    <div className="weekly-day-block__subtotal">
-                      ጠቅላላ ድምር: {Number(day.dayTotalRevenue).toFixed(2)} Br
-                    </div>
-                  </div>
-                )}
-
-                {day.runningCosts.length > 0 && (
-                  <div className="daily-detail__section">
-                    <div className="daily-detail__section-title">የሥራ ማስኬጃ ወጪዎች</div>
-                    {day.runningCosts.map((c, idx) => (
-                      <div key={idx} className="daily-detail__row">
-                        <div className="daily-detail__row-left">
-                          <span className="daily-detail__name">{c.name}</span>
-                        </div>
-                        <div className="daily-detail__row-right">
-                          <span className="daily-detail__price daily-detail__price--cost">
-                            {c.count} × {Number(c.price).toFixed(2)} = {Number(c.total).toFixed(2)} Br
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                    <div className="weekly-day-block__subtotal weekly-day-block__subtotal--cost">
-                      ጠቅላላ ድምር: {Number(day.dayTotalCost).toFixed(2)} Br
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {/* ── Monthly expanded detail ── */}
-      {expanded && detail && type === 'monthly' && (
-        <div className="daily-detail">
-
-          {/* Orders section */}
+          {/* Orders grouped flat */}
           <div className="monthly-detail__section">
             <div className="monthly-detail__section-header">
               <span>ትዕዛዞች</span>
@@ -294,15 +265,13 @@ function RangeCard({ start, end, data, type }) {
             </div>
 
             {detail.groupedOrders.length === 0 && (
-              <div className="daily-detail__empty">No orders this month</div>
+              <div className="daily-detail__empty">No orders this week</div>
             )}
 
             {detail.groupedOrders.map((o, idx) => (
               <div key={idx} className="daily-detail__row">
                 <div className="daily-detail__row-left">
-                  <span className="daily-detail__name">
-                    {o.name} ({o.count})
-                  </span>
+                  <span className="daily-detail__name">{o.name} ({o.count})</span>
                   {o.type && <span className="daily-detail__type">{o.type}</span>}
                 </div>
                 <div className="daily-detail__row-right">
@@ -319,7 +288,7 @@ function RangeCard({ start, end, data, type }) {
             </div>
           </div>
 
-          {/* Running costs section */}
+          {/* Running costs grouped flat */}
           <div className="monthly-detail__section">
             <div className="monthly-detail__section-header">
               <span>የሥራ ማስኬጃ ወጪዎች</span>
@@ -327,15 +296,13 @@ function RangeCard({ start, end, data, type }) {
             </div>
 
             {detail.groupedCosts.length === 0 && (
-              <div className="daily-detail__empty">No running costs this month</div>
+              <div className="daily-detail__empty">No running costs this week</div>
             )}
 
             {detail.groupedCosts.map((c, idx) => (
               <div key={idx} className="daily-detail__row">
                 <div className="daily-detail__row-left">
-                  <span className="daily-detail__name">
-                    {c.name} ({c.count})
-                  </span>
+                  <span className="daily-detail__name">{c.name} ({c.count})</span>
                 </div>
                 <div className="daily-detail__row-right">
                   <span className="daily-detail__price daily-detail__price--cost">
@@ -351,7 +318,104 @@ function RangeCard({ start, end, data, type }) {
             </div>
           </div>
 
-          {/* Monthly expenses section */}
+          {/* Deleted orders — only shown if any exist */}
+          {detail.deletedOrders && detail.deletedOrders.length > 0 && (
+            <div className="monthly-detail__section daily-detail__section--deleted">
+              <div className="monthly-detail__section-header" style={{ background: 'var(--danger-tint)', color: 'var(--danger)' }}>
+                <span>የተሰረዙ ትዕዛዞች</span>
+                <span>{detail.deletedOrders.length} ትዕዛዝ</span>
+              </div>
+
+              {detail.deletedOrders.map((o, idx) => (
+                <div key={idx} className="daily-detail__row daily-detail__row--deleted">
+                  <div className="daily-detail__row-left">
+                    <span className="daily-detail__name daily-detail__name--deleted">
+                      {o.name}
+                    </span>
+                    {o.type && <span className="daily-detail__type">{o.type}</span>}
+                    <span className="daily-detail__delete-reason">
+                      ምክንያት: {o.deletedReason}
+                    </span>
+                    <span className="daily-detail__type">
+                      ቀን: {formatLongDate(o.originalDate)}
+                    </span>
+                  </div>
+                  <div className="daily-detail__row-right">
+                    <span className="daily-detail__price daily-detail__price--deleted">
+                      -{Number(o.sellingPrice).toFixed(2)} Br
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+        </div>
+      )}
+
+      {/* ── Monthly expanded detail ── */}
+      {expanded && detail && type === 'monthly' && (
+        <div className="daily-detail">
+
+          <div className="monthly-detail__section">
+            <div className="monthly-detail__section-header">
+              <span>ትዕዛዞች</span>
+              <span>{detail.groupedOrders.reduce((s, o) => s + o.count, 0)} ትዕዛዝ</span>
+            </div>
+
+            {detail.groupedOrders.length === 0 && (
+              <div className="daily-detail__empty">No orders this month</div>
+            )}
+
+            {detail.groupedOrders.map((o, idx) => (
+              <div key={idx} className="daily-detail__row">
+                <div className="daily-detail__row-left">
+                  <span className="daily-detail__name">{o.name} ({o.count})</span>
+                  {o.type && <span className="daily-detail__type">{o.type}</span>}
+                </div>
+                <div className="daily-detail__row-right">
+                  <span className="daily-detail__price">
+                    {o.count} × {Number(o.sellingPrice).toFixed(2)} = {Number(o.total).toFixed(2)} Br
+                  </span>
+                </div>
+              </div>
+            ))}
+
+            <div className="monthly-detail__sum monthly-detail__sum--revenue">
+              <span>ጠቅላላ የሽያጭ ድምር</span>
+              <span>{formatMoney(detail.totalOrdersSum)}</span>
+            </div>
+          </div>
+
+          <div className="monthly-detail__section">
+            <div className="monthly-detail__section-header">
+              <span>የሥራ ማስኬጃ ወጪዎች</span>
+              <span>{detail.groupedCosts.reduce((s, c) => s + c.count, 0)} ወጪ</span>
+            </div>
+
+            {detail.groupedCosts.length === 0 && (
+              <div className="daily-detail__empty">No running costs this month</div>
+            )}
+
+            {detail.groupedCosts.map((c, idx) => (
+              <div key={idx} className="daily-detail__row">
+                <div className="daily-detail__row-left">
+                  <span className="daily-detail__name">{c.name} ({c.count})</span>
+                </div>
+                <div className="daily-detail__row-right">
+                  <span className="daily-detail__price daily-detail__price--cost">
+                    {c.count} ጊዜ — ጠቅላላ: {Number(c.total).toFixed(2)} Br
+                  </span>
+                </div>
+              </div>
+            ))}
+
+            <div className="monthly-detail__sum monthly-detail__sum--cost">
+              <span>ጠቅላላ የሥራ ማስኬጃ ወጪ ድምር</span>
+              <span>{formatMoney(detail.totalCostsSum)}</span>
+            </div>
+          </div>
+
           <div className="monthly-detail__section">
             <div className="monthly-detail__section-header">
               <span>ወርሃዊ ወጪዎች</span>
@@ -367,7 +431,7 @@ function RangeCard({ start, end, data, type }) {
                 <div className="daily-detail__row-left">
                   <span className="daily-detail__name">{e.name}</span>
                   <span className="daily-detail__type">
-                    {e.isActive ? '● Active' : '○ Closed this month'}
+                    {e.isActive ? '● የዚህ ወር ክፍያዎች' : '○የዚህ ወር የተሰረዙ ክፍያዎች'}
                   </span>
                 </div>
                 <div className="daily-detail__row-right">
@@ -383,6 +447,38 @@ function RangeCard({ start, end, data, type }) {
               <span>{formatMoney(detail.totalExpensesSum)}</span>
             </div>
           </div>
+
+          {/* Deleted orders in monthly view too */}
+          {detail.deletedOrders && detail.deletedOrders.length > 0 && (
+            <div className="monthly-detail__section daily-detail__section--deleted">
+              <div className="monthly-detail__section-header" style={{ background: 'var(--danger-tint)', color: 'var(--danger)' }}>
+                <span>የተሰረዙ ትዕዛዞች</span>
+                <span>{detail.deletedOrders.length} ትዕዛዝ</span>
+              </div>
+
+              {detail.deletedOrders.map((o, idx) => (
+                <div key={idx} className="daily-detail__row daily-detail__row--deleted">
+                  <div className="daily-detail__row-left">
+                    <span className="daily-detail__name daily-detail__name--deleted">
+                      {o.name}
+                    </span>
+                    {o.type && <span className="daily-detail__type">{o.type}</span>}
+                    <span className="daily-detail__delete-reason">
+                      ምክንያት: {o.deletedReason}
+                    </span>
+                    <span className="daily-detail__type">
+                      ቀን: {formatLongDate(o.originalDate)}
+                    </span>
+                  </div>
+                  <div className="daily-detail__row-right">
+                    <span className="daily-detail__price daily-detail__price--deleted">
+                      -{Number(o.sellingPrice).toFixed(2)} Br
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
         </div>
       )}

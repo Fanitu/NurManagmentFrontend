@@ -25,11 +25,11 @@ export default function RunningCostInput() {
     setIsSubmitting(true);
     try {
       await api.createRunningCost({ name: name.trim(), price: Number(price) });
-      showToast('Running cost saved successfully');
+      showToast('የሥራ ማስኬጃ ወጪ በተሳካ ሁኔታ ተመዝግቧል');
       setName('');
       setPrice('');
     } catch (err) {
-      setError(err.message || 'Failed to save running cost');
+      setError(err.message || 'የሥራ ማስኬጃ ወጪ ማስቀመጥ አልተሳካም');
     } finally {
       setIsSubmitting(false);
     }
@@ -73,7 +73,7 @@ export default function RunningCostInput() {
         {error && <div className="form-error">{error}</div>}
 
         <button className="btn btn--primary btn--block" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Saving…' : 'የሥራ ማስኬጃ አስቀምጥ'}
+          {isSubmitting ? 'የተመዘገበ ነው…' : 'የሥራ ማስኬጃ ይመዝግቡ'}
         </button>
       </form>
     </div>

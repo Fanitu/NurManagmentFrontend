@@ -1,23 +1,33 @@
 import { useState } from 'react';
 
+
 export default function LoginModal({ onClose, onLoginSuccess }) {
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [name, setName]               = useState('');
+  const [password, setPassword]       = useState('');
+  const [restaurantId, setRestaurantId] = useState('');
+  const [error, setError]             = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (!name.trim() || !password) {
-      setError('Please enter your name and password');
+    if (!name.trim()) {
+      setError('Please enter your name');
+      return;
+    }
+    if (!password) {
+      setError('Please enter your password');
+      return;
+    }
+    if (!restaurantId.trim()) {
+      setError('Restaurant ID is required');
       return;
     }
 
     setIsSubmitting(true);
     try {
-      await onLoginSuccess(name.trim(), password);
+      await onLoginSuccess(name.trim(), password, restaurantId.trim().toUpperCase());
     } catch (err) {
       setError(err.message || 'Login failed');
     } finally {
@@ -29,8 +39,26 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
     <div className="overlay" onClick={onClose}>
       <div className="modal-wrap" onClick={(e) => e.stopPropagation()}>
         <div className="modal">
-          <h2 className="modal__title">Worker Login</h2>
+          <h2 className="modal__title">Login</h2>
           <form onSubmit={handleSubmit}>
+
+            <div className="form-group">
+              <label className="form-label" htmlFor="login-restaurant-id">
+                Restaurant ID
+              </label>
+              <input
+                id="login-restaurant-id"
+                className="form-input"
+                type="text"
+                value={restaurantId}
+                onChange={(e) => setRestaurantId(e.target.value.toUpperCase())}
+                placeholder="e.g. OMS-2847"
+                autoFocus
+                autoCapitalize="characters"
+                autoComplete="off"
+              />
+            </div>
+
             <div className="form-group">
               <label className="form-label" htmlFor="login-name">
                 Name
@@ -41,10 +69,10 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                autoFocus
                 autoComplete="username"
               />
             </div>
+
             <div className="form-group">
               <label className="form-label" htmlFor="login-password">
                 Password
@@ -58,10 +86,17 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
                 autoComplete="current-password"
               />
             </div>
+
             {error && <div className="form-error">{error}</div>}
-            <button className="btn btn--primary btn--block" type="submit" disabled={isSubmitting}>
+
+            <button
+              className="btn btn--primary btn--block"
+              type="submit"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? 'Logging in…' : 'Login'}
             </button>
+
           </form>
         </div>
       </div>

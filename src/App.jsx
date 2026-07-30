@@ -9,10 +9,10 @@ export default function App() {
   const { user, isLoading, login, logout } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const handleLoginSuccess = async (name, password) => {
-    await login(name, password);
-    setShowLoginModal(false);
-  };
+  const handleLoginSuccess = async (name, password, restaurantId) => {
+  await login(name, password, restaurantId);
+  setShowLoginModal(false);
+};
 
   const isAdmin = user?.role === 'admin';
   const headerTitle = isAdmin ? 'ዋና ፓነል' : 'ትዕዛዝ አስተዳደር ስርዓት';
