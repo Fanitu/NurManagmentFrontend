@@ -1,82 +1,263 @@
 🍽️ Restaurant Management System — Frontend
 
-A modern React + Vite frontend for a full-stack Restaurant Management System designed to support day-to-day restaurant operations through a centralized web application.
+A production-oriented React + Vite frontend for a full-stack Restaurant Management System built to centralize restaurant order processing, revenue tracking, operating costs, expenses, and daily business operations.
 
-The frontend communicates with a dedicated Node.js + Express + MongoDB backend through REST APIs.
+The application provides separate Admin and Worker experiences and communicates with a Node.js/Express backend through REST APIs.
 
 🌐 Live Application
 
 Live Demo:
 https://nur-managment-frontend.vercel.app/
 
-Backend Repository:
-https://github.com/Fanitu/NurManagmentbackend
-
 Frontend Repository:
 https://github.com/Fanitu/NurManagmentFrontend
+
+Backend Repository:
+https://github.com/Fanitu/NurManagmentbackend
 
 ---
 
 📌 Overview
 
-The Restaurant Management System was built to replace fragmented manual restaurant workflows with a centralized digital system.
+The Restaurant Management System replaces fragmented manual workflows with a centralized web application for recording orders and monitoring restaurant financial activity.
 
-The application provides a web-based interface for restaurant staff and administrators to interact with the restaurant's operational data through authenticated backend APIs.
+The frontend is responsible for the user-facing application and role-based workflows, while the backend handles authentication, authorization, business logic, validation, security, and database operations.
 
-The project is structured as a separate frontend and backend application:
+Full-stack architecture
 
-React / Vite Frontend
-        │
-        │ REST API
-        ▼
-Node.js / Express Backend
-        │
-        │ Mongoose
-        ▼
-MongoDB
-
-This separation keeps the user interface, business logic, authentication, and data layer independently maintainable.
+┌─────────────────────────────┐
+│       React + Vite          │
+│          Frontend           │
+│                             │
+│  Admin UI   │   Worker UI   │
+└──────────────┬──────────────┘
+               │
+               │ REST API
+               ▼
+┌─────────────────────────────┐
+│      Node.js + Express      │
+│          Backend            │
+│                             │
+│ Auth • Validation • Logic   │
+│ Security • REST Endpoints   │
+└──────────────┬──────────────┘
+               │
+               │ Mongoose
+               ▼
+┌─────────────────────────────┐
+│           MongoDB           │
+└─────────────────────────────┘
 
 ---
 
-✨ Key Capabilities
+✨ Features
 
-The frontend is the client application for the Restaurant Management System and communicates with protected backend endpoints for restaurant operations.
+🔐 Restaurant-Aware Authentication
 
-📦 Order Management
+The login flow requires:
 
-Provides the user interface for working with restaurant orders through the backend API.
+- Restaurant ID
+- User name
+- Password
 
-The system is connected to backend functionality for:
+The Restaurant ID is normalized to uppercase before authentication.
 
-- Creating orders
-- Viewing orders
-- Updating orders
-- Deleting orders
-- Managing order-related data
-- Working with authenticated API requests
+The frontend stores the authentication token and restores the authenticated session when the application is reopened. It also handles authentication loading and invalid-session cleanup.
+
+Authentication flow
+
+Restaurant ID
+      +
+User Name
+      +
+Password
+      │
+      ▼
+Backend Authentication
+      │
+      ▼
+JWT Token
+      │
+      ▼
+Frontend Session
+      │
+      ▼
+Role-based Workspace
+
+---
+
+👑 Admin Workspace
+
+Administrators have a dedicated navigation interface with four main areas:
+
+- Revenue
+- Running Costs
+- Monthly Expenses
+- Order List
+
+The Admin Panel switches between these modules without leaving the main application workspace.
+
+📊 Revenue Dashboard
+
+The revenue interface supports three reporting periods:
+
+- Daily
+- Weekly
+- Monthly
+
+Daily Revenue
+
+Daily reporting displays:
+
+- Total revenue
+- Operating/running costs
+- Expandable daily details
+- Individual orders
+- Order prices
+- Order timestamps
+- Running costs
+- Deleted orders when applicable
+
+The detailed view allows an administrator to inspect the underlying orders and costs instead of seeing only an aggregate number.
+
+Weekly Revenue
+
+Weekly reporting provides:
+
+- Total revenue
+- Operating costs
+- Total profit
+- Expandable weekly details
+- Grouped orders
+- Grouped operating costs
+- Total sales
+- Deleted-order records
+
+The weekly profit displayed by the frontend is calculated from revenue minus running costs.
+
+Monthly Revenue
+
+Monthly reporting provides:
+
+- Total revenue
+- Operating costs
+- Monthly expenses
+- Net profit after all displayed expenses
+- Expandable monthly details
+- Grouped orders
+- Grouped operating costs
+- Monthly expense records
+- Deleted orders and deletion reasons
+
+🧾 Detailed Financial Records
+
+The expanded reporting views allow administrators to drill into the underlying data.
+
+For example, weekly and monthly details group orders by item and show quantities, selling prices, and totals. Operating costs are similarly grouped and totaled.
+
+Deleted orders are displayed separately with information including the order name, type, deletion reason, original date, and amount.
+
+---
+
+💰 Running Cost Management
+
+Administrators have a dedicated running-cost section for working with operational expenses.
+
+The Admin Panel connects this area directly to the running-cost input component.
+
+---
+
+📅 Monthly Expense Management
+
+Monthly expenses have their own administration interface and are also incorporated into the monthly financial reporting view.
+
+Monthly reporting distinguishes active monthly payments from cancelled/deactivated payments and calculates the applicable expense amount for the reporting period.
+
+---
 
 📋 Order List Management
 
-The application works with the backend order-list functionality for managing restaurant order/menu-related data.
+Administrators can access a dedicated order-list management area from the Admin Panel.
 
-💰 Cost & Expense Management
+---
 
-The frontend communicates with backend functionality for restaurant financial and operational cost data, including:
+👷 Worker Workspace
 
-- Running costs
+Workers have a separate, simplified workspace focused on daily order operations.
+
+The Worker Panel currently provides:
+
+- Order entry
+- Today's orders
+
+The running-cost worker interface exists in the codebase but is currently disabled in the Worker Panel navigation.
+
+Order Entry
+
+Workers use the order-entry workflow to record restaurant orders.
+
+Today's Orders
+
+Workers can access the orders received for the current day through the dedicated today's-orders view.
+
+This separation keeps the worker workflow focused on operational tasks while financial reporting and management functionality remain in the Admin workspace.
+
+---
+
+🧑‍💻 Role-Based Application Design
+
+The application uses a role-based frontend architecture.
+
+                    Login
+                      │
+                      ▼
+              Authentication
+                      │
+                      ▼
+                User / Role
+                 ┌────┴────┐
+                 │         │
+              Admin      Worker
+                 │         │
+        ┌────────┼──────┐  ├── Order Entry
+        │        │      │  └── Today's Orders
+      Revenue  Costs  Expenses
+        │
+     Orders
+
+The application maintains the authenticated user through a React "AuthContext", exposing authentication state, loading state, login, and logout functionality to the rest of the application.
+
+---
+
+🔄 Session Management
+
+The frontend restores the user's session when the application loads.
+
+The authentication context:
+
+1. Checks for the stored authentication token.
+2. Calls the backend "getMe()" endpoint when a token exists.
+3. Restores the authenticated user.
+4. Removes an invalid token when session restoration fails.
+5. Exposes loading state while authentication is being restored.
+6. Clears the token and user state on logout.
+
+---
+
+🌍 Multilingual User Interface
+
+The application contains user-facing labels in Amharic, particularly throughout the restaurant operational and financial interfaces.
+
+Examples include labels for:
+
+- Revenue
+- Operating costs
 - Monthly expenses
-- Cost-related records
+- Orders
+- Profit
+- Daily/weekly/monthly reporting
 
-🔐 Authentication
-
-The frontend works with the backend authentication system to provide protected access to restaurant management functionality.
-
-Authentication and authorization are enforced by the backend API.
-
-📊 Business Management
-
-The application is part of a broader restaurant management platform intended to centralize operational information and reduce reliance on manual business processes.
+This makes the system suitable for restaurant staff working primarily with an Ethiopian-language interface.
 
 ---
 
@@ -85,60 +266,91 @@ The application is part of a broader restaurant management platform intended to 
 Frontend
 
 - React 18
-- React DOM
 - Vite 5
 - JavaScript
+- React Context API
 - HTML
 - CSS
 
 Backend
 
+The frontend communicates with a separate backend built with:
+
 - Node.js
 - Express.js
 - MongoDB
 - Mongoose
-- REST API
 - JWT authentication
+- REST APIs
 
-The frontend's current "package.json" defines React "18.3.1", React DOM "18.3.1", and Vite "5.3.4".
-
----
-
-🏗️ Project Structure
-
-NurManagmentFrontend/
-│
-├── src/
-│   └── Application source code
-│
-├── .gitignore
-├── index.html
-├── package.json
-├── package-lock.json
-└── vite.config.js
-
-The repository currently uses a straightforward Vite/React project structure with the application code contained inside "src".
+The frontend's authentication context communicates with the API client for login and session restoration.
 
 ---
 
-🔄 API Integration
+🏗️ Frontend Architecture
 
-During local development, the Vite development server is configured to proxy "/api" requests toward the backend server.
+src/
+│
+├── api/
+│   └── API client / backend communication
+│
+├── components/
+│   │
+│   ├── admin/
+│   │   ├── AdminPanel
+│   │   ├── RevenueDisplay
+│   │   ├── OrdersListPanel
+│   │   └── MonthlyExpenses
+│   │
+│   ├── worker/
+│   │   ├── WorkerPanel
+│   │   ├── OrderInput
+│   │   ├── TodaysOrders
+│   │   └── RunningCostInput
+│   │
+│   └── shared/
+│       └── LoginModal
+│
+├── context/
+│   └── AuthContext
+│
+├── App.jsx
+└── main.jsx
 
-This allows the frontend to communicate with the local Express API without requiring frontend code to hard-code the backend development URL.
+The Admin and Worker panels are intentionally separated into their own component areas, while authentication is centralized through React Context.
 
-Browser
-   │
-   │ /api/...
-   ▼
-Vite Development Server
-   │
-   │ Proxy
-   ▼
-Express Backend
-   │
-   ▼
-MongoDB
+---
+
+🔌 API Integration
+
+The frontend uses a dedicated API client to communicate with the backend.
+
+Authentication requests include the restaurant identifier, and the authentication context receives the returned token and user information.
+
+The frontend also calls dedicated reporting endpoints for weekly and monthly financial details.
+
+---
+
+🔒 Security Architecture
+
+Security-sensitive responsibilities are handled by the backend rather than trusted solely to the frontend.
+
+The companion backend includes:
+
+- JWT authentication
+- Role-based authorization
+- Request validation
+- Rate limiting
+- MongoDB sanitization
+- XSS protection
+- HTTP parameter pollution protection
+- CORS restrictions
+- Request-size limits
+- Production error handling
+
+See the backend repository for the complete security implementation:
+
+https://github.com/Fanitu/NurManagmentbackend
 
 ---
 
@@ -146,7 +358,7 @@ MongoDB
 
 Prerequisites
 
-Make sure you have installed:
+Make sure you have:
 
 - Node.js
 - npm
@@ -168,9 +380,7 @@ npm install
 
 npm run dev
 
-The Vite development server will provide a local URL that you can open in your browser.
-
-5. Create a production build
+5. Build for production
 
 npm run build
 
@@ -178,111 +388,55 @@ npm run build
 
 npm run preview
 
-These commands are defined in the repository's current "package.json".
-
----
-
-🔐 Security
-
-Security is primarily handled by the backend API.
-
-The corresponding backend implements:
-
-- JWT authentication
-- Role-based authorization
-- Request validation
-- Rate limiting
-- MongoDB injection protection
-- XSS sanitization
-- HTTP parameter pollution protection
-- CORS restrictions
-- Request-size limits
-- Production error handling
-
-For the complete security implementation, see the backend repository:
-
-https://github.com/Fanitu/NurManagmentbackend
-
 ---
 
 🚀 Deployment
 
-The frontend is deployed using Vercel.
+The frontend is deployed as a web application and is available through Vercel.
 
-The repository's GitHub project page currently lists the deployed application:
+Live application:
 
 https://nur-managment-frontend.vercel.app/
 
-The application is built using Vite's production build command:
-
-npm run build
-
----
-
-🧩 Full-Stack Architecture
-
-This frontend is one part of a complete full-stack application.
-
-┌─────────────────────────────┐
-│       React Frontend        │
-│          Vite               │
-│                             │
-│  Restaurant Management UI   │
-└──────────────┬──────────────┘
-               │
-               │ REST API
-               ▼
-┌─────────────────────────────┐
-│      Express Backend        │
-│                             │
-│ Authentication              │
-│ Authorization               │
-│ Business Logic              │
-│ Validation                  │
-│ Security Middleware         │
-└──────────────┬──────────────┘
-               │
-               │ Mongoose
-               ▼
-┌─────────────────────────────┐
-│          MongoDB            │
-│                             │
-│       Application Data      │
-└─────────────────────────────┘
+The production application communicates with the deployed backend API.
 
 ---
 
 💡 Engineering Highlights
 
-This project demonstrates experience with:
+This project demonstrates practical full-stack frontend engineering through:
 
-- React application development
-- Vite-based frontend development
+- Role-based UI architecture
+- Restaurant-specific authentication
+- Persistent JWT sessions
+- React Context for global authentication state
 - REST API integration
-- Frontend/backend separation
-- Development API proxy configuration
+- Financial reporting interfaces
+- Daily, weekly, and monthly business reporting
+- Expandable financial detail views
+- Revenue and cost calculations
+- Deleted-order visibility and reason tracking
+- Separate Admin and Worker workflows
+- Amharic user-facing interface
 - Production deployment with Vercel
-- Authentication-aware application architecture
-- Full-stack JavaScript development
-- Integration with a Node.js/Express backend
 
 ---
 
-📈 Production-Oriented Development
+📈 Business Use Case
 
-This project was developed as part of a real business-management solution rather than only as a tutorial project.
+The system is designed around a real restaurant-management workflow where staff need to record orders while administrators need visibility into financial performance.
 
-The architecture separates the frontend from the backend API, allowing the application to be developed, deployed, and maintained as independent services.
+Instead of keeping operational and financial information in separate manual records, the application connects order activity with revenue, running costs, monthly expenses, and profit reporting.
 
-The backend provides the security and business-logic layer while the React application focuses on the user-facing experience.
+This allows administrators to move from individual transaction records to daily, weekly, and monthly financial summaries within the same application.
 
 ---
 
-🔗 Related Project
+🔗 Related Repository
 
 Restaurant Management System — Backend
 
-Node.js / Express / MongoDB API:
+Node.js / Express / MongoDB backend:
 
 https://github.com/Fanitu/NurManagmentbackend
 
@@ -296,3 +450,9 @@ Full-Stack Web Developer
 
 - GitHub: https://github.com/Fanitu
 - Portfolio: https://fanu-portofoilio.vercel.app/
+
+---
+
+📄 License
+
+This project is provided for portfolio and demonstration purposes.
